@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 @Repository
 public class UserDaoImp implements UserDao{
-
     private static final String URL = "jdbc:mysql://localhost:3306/firstdb?serverTimezone=Europe/Moscow";
     private static final String USERNAME = "root";
     private static final String PASSWORD = "root";
@@ -83,11 +82,26 @@ public class UserDaoImp implements UserDao{
 
         return person;
     }
-
-    public void save1(User person) {
+    long getLastId(){
         try {
             PreparedStatement preparedStatement =
-                    connection.prepareStatement("INSERT INTO Users VALUES(1,?, ?, ?, ?)");
+                    connection.prepareStatement("SELECT id FROM Users ORDER BY id DESC LIMIT 1");
+            preparedStatement.execute();
+            ResultSet rs = preparedStatement.getResultSet();
+            rs.next(); long count = rs.getLong(1);
+rs.close();
+return count;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+       return 0;
+
+    }
+    public void save1(User person) {
+       long i= getLastId()+1;
+        try {
+            PreparedStatement preparedStatement =
+                    connection.prepareStatement("INSERT INTO Users VALUES("+i+",?, ?, ?, ?)");
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             String password = passwordEncoder.encode(person.getPassword());
             person.setPassword(password);
@@ -105,10 +119,10 @@ public class UserDaoImp implements UserDao{
     public void update1(Long id, User updatedPerson) {
         try {
             PreparedStatement preparedStatement =
-                    connection.prepareStatement("UPDATE Person SET name=?,password=?, age=?, email=? WHERE id=?");
+                    connection.prepareStatement("UPDATE Users SET name=?,password=?, age=?, email=? WHERE id=?");
 
             preparedStatement.setString(1, updatedPerson.getName());
-            preparedStatement.setString(2, updatedPerson.getName());
+            preparedStatement.setString(2, updatedPerson.getPassword());
             preparedStatement.setInt(3, updatedPerson.getAge());
             preparedStatement.setString(4, updatedPerson.getEmail());
             preparedStatement.setLong(5, id);
@@ -123,7 +137,7 @@ public class UserDaoImp implements UserDao{
         PreparedStatement preparedStatement =
                 null;
         try {
-            preparedStatement = connection.prepareStatement("DELETE FROM Person WHERE id=?");
+            preparedStatement = connection.prepareStatement("DELETE FROM Users WHERE id=?");
 
             preparedStatement.setLong(1, id);
 
