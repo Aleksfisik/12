@@ -3,21 +3,15 @@ package ru.org.spring.controllers;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ru.org.spring.model.User;
-import ru.org.spring.services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import ru.org.spring.services.UserDetailsServiceImpl;
 import org.springframework.ui.Model;
-
-import java.security.Principal;
-import java.util.List;
 
 @Controller
 @RequestMapping("/user")
 public class UserController {
-    private UserService userService;
+    private UserDetailsServiceImpl userService;
 
-    public UserController(UserService userService) {
+    public UserController(UserDetailsServiceImpl userService) {
         this.userService = userService;
     }
 

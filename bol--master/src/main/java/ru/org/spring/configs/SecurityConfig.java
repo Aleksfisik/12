@@ -1,9 +1,6 @@
 package ru.org.spring.configs;
 
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import ru.org.spring.services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import ru.org.spring.services.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -19,12 +16,12 @@ import javax.sql.DataSource;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private UserService userService;
+    private UserDetailsServiceImpl userService;
 
 
     private SuccessUserHandler successUserHandler;
 
-    public SecurityConfig(UserService userService, SuccessUserHandler successUserHandler) {
+    public SecurityConfig(UserDetailsServiceImpl userService, SuccessUserHandler successUserHandler) {
         this.successUserHandler = successUserHandler;
         this.userService = userService;
     }

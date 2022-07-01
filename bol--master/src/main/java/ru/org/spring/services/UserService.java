@@ -1,44 +1,20 @@
 package ru.org.spring.services;
 
 import ru.org.spring.model.User;
-import ru.org.spring.model.Role;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
-import java.util.stream.Collectors;
+import java.util.List;
 
-@Service
-public class UserService implements UserDetailsService {
 
-    private final UserServiceImp userRepository;
-    @Autowired
-    public UserService(UserServiceImp userRepository) {
-        this.userRepository = userRepository;
-    }
+public interface UserService {
+    List<User> findAll();
 
-    public User findByName(String name) {
-        return userRepository.findByName(name);
-    }
+    User save(User user);
 
-    @Override
-    @Transactional
-    public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
-        User user = findByName(name);
-        if (user == null) {
-            throw new UsernameNotFoundException(String.format("User '%s' not found", name));
-        }
-        return new org.springframework.security.core.userdetails.User(user.getName(), user.getPassword(),
-                mapRolesToAuthorities(user.getRoles()));
-    }
+    void deleteById(Long aLong);
 
-    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
-        return roles.stream().map(r -> new SimpleGrantedAuthority(r.getName())).collect(Collectors.toList());
-    }
+    User getById(Long aLong);
+
+    void update(Long id, User updatedPerson);
 }

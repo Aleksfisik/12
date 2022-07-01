@@ -3,26 +3,25 @@ package ru.org.spring.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.org.spring.model.User;
-import ru.org.spring.services.UserService;
 import ru.org.spring.dao.UserDao;
-import java.util.List;
+import ru.org.spring.services.UserService;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
-    private UserDao userDao;
-    @Autowired
-    public AdminController(UserDao userDao) {
-        this.userDao = userDao;
+    private UserService userService;
+    public AdminController(UserService userService) {
+        this.userService = userService;
     }
+
+
 
 
     @GetMapping()
     public String index(Model model) {
-        model.addAttribute("users", userDao.index1());
+        model.addAttribute("users", userService.findAll());
         return "user-list.html";
     }
 
@@ -34,13 +33,13 @@ public class AdminController {
 
     @PostMapping("/user-create")
     public String create(@ModelAttribute("user") User person) {
-        userDao.save1(person);
+        userService.save(person);
         return "redirect:/admin";
     }
 
     @GetMapping("/user-update/{id}")
     public String edit(Model model, @PathVariable("id") long id) {
-        model.addAttribute("user", userDao.show1(id));
+        model.addAttribute("user", userService.getById(id));
         return "user-update.html";
     }
 
@@ -48,13 +47,13 @@ public class AdminController {
     public String update(@ModelAttribute("user") User person,
                          @PathVariable("id") long id) {
 
-        userDao.update1(id, person);
+        userService.update(id, person);
         return "redirect:/admin";
     }
 
     @GetMapping("/user-delete/{id}")
     public String delete(@PathVariable("id") long id) {
-        userDao.delete1(id);
+        userService.deleteById(id);
         return "redirect:/admin";
     }
 }
