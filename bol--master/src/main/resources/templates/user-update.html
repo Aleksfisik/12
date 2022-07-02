@@ -5,6 +5,7 @@
 </head>
 <body>
 <form action="#" th:action="@{/admin/user-update/up/{id}(id=${user.id})}" th:object="${user}" method="post">
+    <input type="hidden" name="_method" value="put" />
     <label for="id">ID</label>
     <input readonly type="number" th:field="*{id}" id="id" placeholder="ID">
     <br/>
