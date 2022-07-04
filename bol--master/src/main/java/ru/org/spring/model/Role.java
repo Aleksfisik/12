@@ -20,6 +20,7 @@ public class Role implements GrantedAuthority {
     public String getAuthority() {
         return name;
     }
+
     @ManyToMany(mappedBy = "roles")
     private Collection<User> users;
 }

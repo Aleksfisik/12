@@ -1,10 +1,5 @@
 package ru.org.spring.services;
 
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.query.FluentQuery;
 import ru.org.spring.model.User;
 import ru.org.spring.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,19 +10,18 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.org.spring.repository.UserRepository;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
-public class UserDetailsServiceImpl implements UserDetailsService{
+public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private final UserDetailsHelp userServiceHelp;
+    private final UserRepository userServiceHelp;
+
     @Autowired
-    public UserDetailsServiceImpl(UserDetailsHelp userServiceHelp) {
+    public UserDetailsServiceImpl(UserRepository userServiceHelp) {
         this.userServiceHelp = userServiceHelp;
     }
 

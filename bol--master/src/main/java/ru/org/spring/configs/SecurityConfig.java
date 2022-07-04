@@ -1,5 +1,9 @@
 package ru.org.spring.configs;
 
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import ru.org.spring.services.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -40,7 +44,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout().logoutSuccessUrl("/");
     }
 
-
     @Bean
     public JdbcUserDetailsManager users(DataSource dataSource) {
         JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
@@ -56,7 +59,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setPasswordEncoder(passwordEncoder());
-        authenticationProvider.setUserDetailsService( userService);
+        authenticationProvider.setUserDetailsService(userService);
         return authenticationProvider;
     }
+
+
 }

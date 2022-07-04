@@ -12,11 +12,10 @@ import ru.org.spring.services.UserService;
 @RequestMapping("/admin")
 public class AdminController {
     private UserService userService;
+
     public AdminController(UserService userService) {
         this.userService = userService;
     }
-
-
 
 
     @GetMapping()
